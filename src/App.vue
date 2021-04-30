@@ -1,10 +1,26 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div>
+    <header-component/>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
+
+<script>
+import HeaderComponent from './components/HeaderComponent.vue'
+import {mapActions} from 'vuex'
+
+export default {
+  components: {
+    HeaderComponent
+  },
+  methods: {
+    ...mapActions(['readToken'])
+  },
+  created() {
+    this.readToken();
+  }
+}
+</script>
 
 <style>
 #app {

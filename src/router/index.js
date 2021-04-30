@@ -1,5 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import store from '../store'
+import Home from '../views/Home.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Contacts from '../views/Contacts.vue';
+import EditContact from '../views/EditContact.vue';
 
 const routes = [
   {
@@ -8,18 +13,42 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/Login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/Register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/Contacts',
+    name: 'Contacts',
+    component: Contacts,
+    meta: { isProtected: true }
+  },
+  {
+    path: '/Contacts/:id',
+    name: 'EditContact',
+    component: EditContact,
+    meta: { isProtected: true }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
+
+router.beforeEach((to, from, next) => {
+  let isProtected = to.matched.some( item => item.meta.isProtected )
+
+  if(isProtected && store.state.token === null) {
+    next('/');
+  } else {
+    next();
+  }
+});
 
 export default router
