@@ -1,4 +1,5 @@
 <template>
+  test
     <form @submit.prevent="login(user)">
       <div class="form-group row px-3">
         <label for="InputEmail">Email address</label>
